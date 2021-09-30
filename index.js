@@ -1,20 +1,20 @@
 const data_url =
   "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/afluencia_2020.json";
 
-(width = 550), (height = 400);
+(width = 550), (height = 230);
 var margin = {
-  top: 50,
+  top: 10,
   right: 50,
   bottom: 50,
   left: 60,
 };
 
-var getData = (url) => {
+var getData = (url, filter) => {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
       let dataFiltrada = data.filter((d) => d.linea == "A");
-      dataFiltrada = data.filter((d) => d.dia.includes("-01-"));
+      dataFiltrada = data.filter((d) => d.dia.includes(filter));
       const dataVis = dataFiltrada.map((d) => {
         let dia = d.dia.slice(0, 2);
         if (dia.startsWith("0")) {
@@ -57,14 +57,12 @@ var viz = (data) => {
     .data([data])
     .join("g")
     .attr("class", "bars")
-    .attr("fill", "steelblue")
+    .attr("fill", "#00d1b2")
     .selectAll("rect")
     .data((d) => d)
     .join("rect")
     .attr("x", (d) => x(d.anio))
     .attr("y", (d) => y(+d.val))
-    .transition()
-    .duration(200)
     .attr("width", 10)
     .attr("height", (d) => y(d3.min(data, (d) => +d.val) - 100) - y(+d.val));
 
@@ -84,6 +82,7 @@ var viz = (data) => {
 };
 
 const filterByMonth = (month) => {
+  getData(data_url, month);
   var buttons = document.getElementsByTagName("button");
 
   for (let i = 0; i < buttons.length; i++) {
@@ -94,4 +93,4 @@ const filterByMonth = (month) => {
   document.getElementById(month).classList.add("is-primary");
 };
 
-getData(data_url);
+getData(data_url, "-01-");
