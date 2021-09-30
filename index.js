@@ -83,4 +83,15 @@ var viz = (data) => {
     .call(yAxis);
 };
 
+const filterByMonth = (month) => {
+  var buttons = document.getElementsByTagName("button");
+
+  for (let i = 0; i < buttons.length; i++) {
+    let button = buttons[i];
+    button.classList.remove("is-primary");
+  }
+
+  document.getElementById(month).classList.add("is-primary");
+};
+
 getData(data_url);
