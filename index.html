@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualización afluencia Metro de Medellín 2020</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <p class="title">Afluencia Metro de Medellín 2020</p>
+        <p class="subtitle">
+          Afluencia de pasajeros en el sistema Metro para el año 2020,
+          específicamente para la Línea A, por día. Se reporta como cantidad de
+          viajeros que acuden a la Línea.
+        </p>
+      </div>
+    </section>
+    <section>
+      <!-- vis -->
+      <div class="dataviz" id="dataviz" style="padding-left: 50px">
+        <svg></svg>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          Los datos presentes se encuentran en el portal de datos abiertos del
+          Metro de Medellín
+          <a
+            href="https://datosabiertos-metrodemedellin.opendata.arcgis.com/documents/0a8afc13eca1465998ccb1d694866374/about"
+            >https://datosabiertos-metrodemedellin.opendata.arcgis.com/documents/0a8afc13eca1465998ccb1d694866374/about</a
+          >
+        </p>
+        <p>
+          Power by
+          <a href="https://uniandes.edu.co/"><strong>Uniandes</strong></a
+          >. La licencia de los datos es
+          <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >CC BY NC SA 4.0</a
+          >.
+        </p>
+      </div>
+    </footer>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
