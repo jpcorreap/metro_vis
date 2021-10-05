@@ -9,7 +9,7 @@ var margin = {
   left: 60,
 };
 
-var getData = (url, filter) => {
+var getOldData = (url, filter) => {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -30,8 +30,51 @@ var getData = (url, filter) => {
     });
 };
 
+var getData = async () => {
+  const urls = [
+    "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/data/2019.json",
+    "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/data/2020.json",
+    "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/data/2021.json",
+  ];
+
+  const data = [];
+
+  // Fetches all data required to vis
+  const promises = urls.map((url) =>
+    fetch(url).then((response) => response.json())
+  );
+
+  const responses = await Promise.all(promises);
+
+  let splitted = "",
+    day = 0,
+    month = 0,
+    year = 0;
+
+  // Parses dates and pushes all data to the data array
+  responses.forEach((yearData) => {
+    yearData.forEach((register) => {
+      splitted = register.dia.split("-");
+      day = +splitted[0];
+      month = +splitted[1];
+      year = +splitted[2];
+
+      data.push({ ...register, dia: new Date(year, month - 1, day) });
+    });
+  });
+
+  console.table(
+    data.filter(
+      (register) =>
+        register.dia.getFullYear() === 2019 && register.dia.getMonth() + 1 === 8
+    )
+  );
+
+  return data;
+};
+
 var viz = (data) => {
-  console.log(data);
+  // console.log(data);
   x = d3
     .scaleBand()
     .domain(data.map((d) => d.anio))
@@ -82,7 +125,7 @@ var viz = (data) => {
 };
 
 const filterByMonth = (month) => {
-  getData(data_url, month);
+  getOldData(data_url, month);
   var buttons = document.getElementsByTagName("button");
 
   for (let i = 0; i < buttons.length; i++) {
@@ -93,4 +136,6 @@ const filterByMonth = (month) => {
   document.getElementById(month).classList.add("is-primary");
 };
 
-getData(data_url, "-01-");
+getOldData(data_url, "-01-");
+
+getData();
