@@ -29,49 +29,55 @@
           type="text"
           id="date-input"
           style="z-index: 500000"
-          onchange="console.log(d2.getDate())"
+          onchange="receiveDay(d2.getDate())"
           autocomplete="off"
         />
       </div>
       <div style="margin-top: 30px; margin-left: 50px; text-align: center">
-        <button
-          id="-01-"
-          class="button is-primary"
-          onclick="filterByMonth('-01-')"
-        >
+        <button id="LA" class="button is-primary" onclick="receiveLine('A')">
           Línea A
         </button>
-        <button id="-02-" class="button" onclick="filterByMonth('-02-')">
+        <button id="LB" class="button" onclick="receiveLine('B')">
           Línea B
         </button>
-        <button id="-03-" class="button" onclick="filterByMonth('-03-')">
+        <button id="LK" class="button" onclick="receiveLine('K')">
           Línea K
         </button>
-        <button id="-04-" class="button" onclick="filterByMonth('-04-')">
+        <button id="LJ" class="button" onclick="receiveLine('J')">
           Línea J
         </button>
-        <button id="-05-" class="button" onclick="filterByMonth('-05-')">
+        <button id="L1" class="button" onclick="receiveLine('1')">
           Línea 1
         </button>
-        <button id="-06-" class="button" onclick="filterByMonth('-06-')">
+        <button id="L2" class="button" onclick="receiveLine('2')">
           Línea 2
         </button>
-        <button id="-07-" class="button" onclick="filterByMonth('-07-')">
+        <button id="LT-A" class="button" onclick="receiveLine('T-A')">
           Línea T-A
         </button>
-        <button id="-08-" class="button" onclick="filterByMonth('-08-')">
+        <button id="LM" class="button" onclick="receiveLine('M')">
           Línea M
         </button>
-        <button id="-09-" class="button" onclick="filterByMonth('-09-')">
+        <button id="LH" class="button" onclick="receiveLine('H')">
           Línea H
         </button>
-        <button id="-10-" class="button" onclick="filterByMonth('-10-')">
+        <button id="LO" class="button" onclick="receiveLine('O')">
           Línea O
         </button>
       </div>
       <!-- vis -->
       <div class="dataviz" id="dataviz" style="padding-left: 50px">
         <svg></svg>
+      </div>
+    </section>
+    <section>
+      <div style="margin: 20px">
+        <p class="title">What?</p>
+        <p>Las variables son:</p>
+        <ul>
+          <li><strong>Línea</strong> - categórica</li>
+          <li><strong>4:00, 5:00, ..., 23:00</strong> - contínuas</li>
+        </ul>
       </div>
     </section>
     <footer class="footer">
@@ -104,6 +110,8 @@
     <!-- Datepicker initialization -->
     <script>
       const d2 = new Datepicker(document.getElementById("date-input"), {
+        // These first and last date should not be hardcoded,
+        // They should be extracted from data
         first_date: new Date(2019, 0, 1),
         last_date: new Date(2021, 6, 31),
         format: (d) => {

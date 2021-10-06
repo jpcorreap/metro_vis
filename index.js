@@ -1,7 +1,7 @@
 const data_url =
   "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/afluencia_2020.json";
 
-(width = 550), (height = 230);
+(width = 600), (height = 230);
 var margin = {
   top: 10,
   right: 50,
@@ -9,28 +9,10 @@ var margin = {
   left: 60,
 };
 
-var getOldData = (url, filter) => {
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      let dataFiltrada = data.filter((d) => d.linea == "A");
-      dataFiltrada = data.filter((d) => d.dia.includes(filter));
-      const dataVis = dataFiltrada.map((d) => {
-        let dia = d.dia.slice(0, 2);
-        if (dia.startsWith("0")) {
-          dia = dia.slice(1, 2);
-        }
+let filterDate = new Date(2019, 1, 31);
+let filterLinea = "Línea B";
 
-        return {
-          anio: dia,
-          val: +d.total,
-        };
-      });
-      viz(dataVis);
-    });
-};
-
-var getData = async () => {
+var getData = async (date, linea) => {
   const urls = [
     "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/data/2019.json",
     "https://raw.githubusercontent.com/jpcorreap/metro_vis/master/data/2020.json",
@@ -63,18 +45,36 @@ var getData = async () => {
     });
   });
 
-  console.table(
-    data.filter(
-      (register) =>
-        register.dia.getFullYear() === 2019 && register.dia.getMonth() + 1 === 8
-    )
-  );
+  const filtered = data.filter(
+    (register) =>
+      register.dia.getTime() === filterDate.getTime() &&
+      register.linea === filterLinea
+  )[0];
 
-  return data;
+  console.info(filterDate)
+  console.info(filterLinea)
+  console.info(filtered)
+  
+  if(!filtered) {
+    return [];
+  }
+
+  const dataVis = [];
+
+  for (let index = 4; index < 24; index++) {
+    if (filtered[index + ":00"]) {
+      dataVis.push({ anio: index + "h", val: filtered[index + ":00"] });
+    }
+  }
+
+  console.log(dataVis);
+
+  viz(dataVis);
+  return dataVis;
 };
 
 var viz = (data) => {
-  // console.log(data);
+  console.log(data);
   x = d3
     .scaleBand()
     .domain(data.map((d) => d.anio))
@@ -124,8 +124,7 @@ var viz = (data) => {
     .call(yAxis);
 };
 
-const filterByMonth = (month) => {
-  getOldData(data_url, month);
+const desactivateOtherButtons = (line) => {
   var buttons = document.getElementsByTagName("button");
 
   for (let i = 0; i < buttons.length; i++) {
@@ -133,9 +132,18 @@ const filterByMonth = (month) => {
     button.classList.remove("is-primary");
   }
 
-  document.getElementById(month).classList.add("is-primary");
+  document.getElementById("L" + line).classList.add("is-primary");
 };
 
-getOldData(data_url, "-01-");
+const receiveDay = (date) => {
+  filterDate = date;
+  getData(date, filterLinea);
+};
 
-getData();
+const receiveLine = (linea) => {
+  desactivateOtherButtons(linea);
+  filterLinea = "Línea " + linea;
+  getData(filterDate, linea);
+};
+
+getData(filterDate, filterLinea);
