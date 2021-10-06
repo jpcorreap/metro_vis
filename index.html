@@ -4,38 +4,71 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Visualización afluencia Metro de Medellín 2020</title>
+    <title>Visualización de afluencia en el Metro de Medellín</title>
+    <!-- Bulma.css -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
     />
+    <!-- Datepicker.css -->
+    <link rel="stylesheet" href="datepicker.css" />
   </head>
   <body>
     <section class="hero is-primary">
       <div class="hero-body">
-        <p class="title">Afluencia en el Metro de Medellín 2020</p>
+        <p class="title">Afluencia en el Metro de Medellín</p>
         <p class="subtitle">
-          Afluencia de pasajeros en el sistema Metro para el año 2020,
-          específicamente para la Línea A, por día. Se reporta como cantidad de
-          viajeros que acuden a la Línea.
+          Afluencia de pasajeros en el sistema Metro, discriminado por día y
+          línea. Se reporta como cantidad de viajeros que acuden a la Línea.
         </p>
       </div>
     </section>
     <section>
-      <div style="margin-top:30px; margin-left: 50px;">
-      <button id="-01-" class="button is-primary" onclick="filterByMonth('-01-')">Enero</button>
-      <button id="-02-" class="button" onclick="filterByMonth('-02-')">Febrero</button>
-      <button id="-03-" class="button" onclick="filterByMonth('-03-')">Marzo</button>
-      <button id="-04-" class="button" onclick="filterByMonth('-04-')">Abril</button>
-      <button id="-05-" class="button" onclick="filterByMonth('-05-')">Mayo</button>
-      <button id="-06-" class="button" onclick="filterByMonth('-06-')">Junio</button>
-      <button id="-07-" class="button" onclick="filterByMonth('-07-')">Julio</button>
-      <button id="-08-" class="button" onclick="filterByMonth('-08-')">Agosto</button>
-      <button id="-09-" class="button" onclick="filterByMonth('-09-')">Septiembre</button>
-      <button id="-10-" class="button" onclick="filterByMonth('-10-')">Octubre</button>
-      <button id="-11-" class="button" onclick="filterByMonth('-11-')">Noviembre</button>
-      <button id="-12-" class="button" onclick="filterByMonth('-12-')">Diciembre</button>
-    </div>
+      <div style="margin-top: 30px; margin-left: 50px; text-align: center">
+        <input
+          type="text"
+          id="date-input"
+          style="z-index: 500000"
+          onchange="console.log(d2.getDate())"
+          autocomplete="off"
+        />
+      </div>
+      <div style="margin-top: 30px; margin-left: 50px; text-align: center">
+        <button
+          id="-01-"
+          class="button is-primary"
+          onclick="filterByMonth('-01-')"
+        >
+          Línea A
+        </button>
+        <button id="-02-" class="button" onclick="filterByMonth('-02-')">
+          Línea B
+        </button>
+        <button id="-03-" class="button" onclick="filterByMonth('-03-')">
+          Línea K
+        </button>
+        <button id="-04-" class="button" onclick="filterByMonth('-04-')">
+          Línea J
+        </button>
+        <button id="-05-" class="button" onclick="filterByMonth('-05-')">
+          Línea 1
+        </button>
+        <button id="-06-" class="button" onclick="filterByMonth('-06-')">
+          Línea 2
+        </button>
+        <button id="-07-" class="button" onclick="filterByMonth('-07-')">
+          Línea T-A
+        </button>
+        <button id="-08-" class="button" onclick="filterByMonth('-08-')">
+          Línea M
+        </button>
+        <button id="-09-" class="button" onclick="filterByMonth('-09-')">
+          Línea H
+        </button>
+        <button id="-10-" class="button" onclick="filterByMonth('-10-')">
+          Línea O
+        </button>
+      </div>
       <!-- vis -->
       <div class="dataviz" id="dataviz" style="padding-left: 50px">
         <svg></svg>
@@ -57,11 +90,35 @@
           >. La licencia de los datos es
           <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
             >CC BY NC SA 4.0</a
-          >.
+          >. El selector de fechas fue tomado de
+          <a href="https://www.cssscript.com/date-picker-calendar/"
+            >https://www.cssscript.com/date-picker-calendar/</a
+          >
         </p>
       </div>
     </footer>
+    <!-- D3 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Datepicker.js -->
+    <script src="datepicker.js"></script>
+    <!-- Datepicker initialization -->
+    <script>
+      const d2 = new Datepicker(document.getElementById("date-input"), {
+        first_date: new Date(2019, 0, 1),
+        last_date: new Date(2021, 6, 31),
+        format: (d) => {
+          return [
+            WEEKDAYS_SHORT[d.getDay()],
+            d.getDate(),
+            MONTHS_SHORT[d.getMonth()],
+            "de",
+            d.getFullYear(),
+          ].join(" ");
+        },
+        first_day_of_week: "lun",
+        initial_date: new Date(2021, 6, 31),
+      });
+    </script>
     <script src="index.js"></script>
   </body>
 </html>
